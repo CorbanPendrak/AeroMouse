@@ -149,9 +149,16 @@ void loop() {
         Serial.println("Right Click");
         bleMouse.release(MOUSE_RIGHT);
       }
+      else{
+        //right click is still being held down
+        while(digitalRead(RIGHT_BUTTON) == LOW){
+          //click and hold, or drag
+          Serial.println("Holding Right Click");
+          delay(50);
+        }
+        bleMouse.release(MOUSE_RIGHT);
+      }
     }
-    bleMouse.release(MOUSE_RIGHT);
-    
     // Moving left/right
     if (abs(g.gyro.z - starting_gyro.gyro.z) > 1.0) { 
         // 0.3 is the error margin
