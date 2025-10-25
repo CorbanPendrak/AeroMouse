@@ -117,6 +117,41 @@ void loop() {
     Serial.println(" rad/s");
     Serial.println("");
 
+     //LEFT CLICK 
+    if(digitalRead(LEFT_BUTTON) == LOW){
+      //left click pressed down
+      bleMouse.press(MOUSE_LEFT);
+      delay(300);  
+      if(digitalRead(LEFT_BUTTON) == HIGH){
+        //left click quickly released
+        //aka a regular click
+        Serial.println("Left Click");
+        bleMouse.release(MOUSE_LEFT);
+      }
+      else{
+        //left click is still being held down
+        while(digitalRead(LEFT_BUTTON) == LOW){
+          //click and hold, or drag
+          Serial.println("Holding Left CLick");
+          delay(50);
+        }
+        bleMouse.release(MOUSE_LEFT);
+      }
+    }
+    
+    //RIGHT CLICK
+    if(digitalRead(RIGHT_BUTTON) == LOW){
+      //right button pressed down
+      bleMouse.press(MOUSE_RIGHT);
+      delay(300);
+      if(digitalRead(RIGHT_BUTTON) == HIGH){
+        //right click quickly released
+        Serial.println("Right Click");
+        bleMouse.release(MOUSE_RIGHT);
+      }
+    }
+    bleMouse.release(MOUSE_RIGHT);
+    
     // Moving left/right
     if (abs(g.gyro.z - starting_gyro.gyro.z) > 1.0) { 
         // 0.3 is the error margin
