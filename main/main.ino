@@ -118,31 +118,25 @@ void loop() {
     Serial.println("");
 
     // Moving left/right
-    if (abs(g.gyro.x) - starting_gyro.gyro.x > 0.3) { 
+    if (abs(g.gyro.z - starting_gyro.gyro.z) > 1.0) { 
         // 0.3 is the error margin
         Serial.println("M0ving the m0use left/right.");
-        int direction = (g.gyro.x > 0) - (g.gyro.x < 0);
+        int direction = (g.gyro.z < 0) - (g.gyro.z > 0) ;
         Serial.print("Directi0n X:");
         Serial.println(direction);
-        startTime = millis();
-        while(millis()<startTime+2000) {
-          bleMouse.move(5 * direction, 0);
-          delay(100);
-        }
+        bleMouse.move(direction, 0);
+        delay(100);
     }
 
     // Moving up/down
-    if (abs(g.gyro.y) - starting_gyro.gyro.y > 0.3) { 
+    if (abs(g.gyro.x - starting_gyro.gyro.x) > 1.0) { 
         // 0.3 is the error margin
         Serial.println("M0ving the m0use up/d0wn.");
-        int direction = (g.gyro.y > 0) - (g.gyro.y < 0);
+        int direction = (g.gyro.x < 0) - (g.gyro.x > 0);
         Serial.print("Directi0n Y:");
         Serial.println(direction);
-        startTime = millis();
-        while(millis()<startTime+2000) {
-          bleMouse.move(0,5 * direction);
-          delay(100);
-        }
+        bleMouse.move(0,direction);
+        delay(100);
     }
 
     delay(500);
