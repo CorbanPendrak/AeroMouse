@@ -6,6 +6,10 @@
 #include <Adafruit_Sensor.h>
 #include <Wire.h>
 
+#define LEFT_BUTTON 16
+#define RIGHT_BUTTON 1
+#define MIDDLE_BUTTON 17
+
 Adafruit_MPU6050 mpu;
 BleMouse bleMouse("N0t malware }:)", "KnightHacks VIII", 100);
 sensors_event_t starting_acc, starting_gyro, starting_temp;
@@ -14,10 +18,14 @@ static float gyro_bias_z = 0.0f;
 
 void setup() {
   Serial.begin(115200);
+
+  pinMode(LEFT_BUTTON, INPUT_PULLUP);
+  pinMode(RIGHT_BUTTON, INPUT_PULLUP);
+  pinMode(MIDDLE_BUTTON, INPUT_PULLUP);
+
   Serial.println("BLE is starting. Maybe. H0pefully...");
   bleMouse.begin();
 
-  // Try to initialize!
   if (!mpu.begin()) {
     Serial.println("I failed. I c0uldn't find the MPU6050, but whatever.");
     while (1) {
@@ -137,6 +145,49 @@ void loop() {
     }
 
     delay(15);
+
+    //LEFT CLICK 
+    if(digitalRead(LEFT_BUTTON) == LOW){
+      //left click pressed down
+      bleMouse.press(MOUSE_LEFT);
+      delay(300);  
+      if(digitalRead(LEFT_BUTTON) == HIGH){
+        //left click quickly released
+        //aka a regular click
+        Serial.println("Left Click");
+        bleMouse.release(MOUSE_LEFT);
+      }
+      else{
+        //left click is still being held down
+        while(digitalRead(LEFT_BUTTON) == LOW){
+          //click and hold, or drag
+          Serial.println("Holding Left Click");
+          delay(50);
+        }
+        bleMouse.release(MOUSE_LEFT);
+      }
+    }
+    
+    //RIGHT CLICK
+    if(digitalRead(RIGHT_BUTTON) == LOW){
+      //right button pressed down
+      bleMouse.press(MOUSE_RIGHT);
+      delay(300);
+      if(digitalRead(RIGHT_BUTTON) == HIGH){
+        //right click quickly released
+        Serial.println("Right Click");
+        bleMouse.release(MOUSE_RIGHT);
+      }
+      else{
+        //right click is still being held down
+        while(digitalRead(RIGHT_BUTTON) == LOW){
+          //click and hold, or drag
+          Serial.println("Holding Right Click");
+          delay(50);
+        }
+        bleMouse.release(MOUSE_RIGHT);
+      }
+    }
 
     Serial.print("This is the current r0tati0n, have fun debugging all the err0rs!\n");
     Serial.print(g.gyro.x);
