@@ -6,6 +6,10 @@
 #include <Adafruit_Sensor.h>
 #include <Wire.h>
 
+#define LEFT_BUTTON 16
+#define RIGHT_BUTTON 1
+#define MIDDLE_BUTTON 17
+
 Adafruit_MPU6050 mpu;
 BleMouse bleMouse("N0t malware }:)", "KnightHacks VIII", 100);
 sensors_event_t starting_acc, starting_gyro, starting_temp;
@@ -15,6 +19,9 @@ void setup() {
   Serial.println("BLE is starting. Maybe. H0pefully...");
   bleMouse.begin();
 
+  pinMode(LEFT_BUTTON, INPUT_PULLUP);
+  pinMode(RIGHT_BUTTON, INPUT_PULLUP);
+  pinMode(MIDDLE_BUTTON, INPUT_PULLUP); //input is like
   // Try to initialize!
   if (!mpu.begin()) {
     Serial.println("I failed. I c0uldn't find the MPU6050, but whatever.");
