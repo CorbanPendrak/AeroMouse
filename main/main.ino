@@ -132,7 +132,7 @@ void loop() {
         //left click is still being held down
         while(digitalRead(LEFT_BUTTON) == LOW){
           //click and hold, or drag
-          Serial.println("Holding Left CLick");
+          Serial.println("Holding Left Click");
           delay(50);
         }
         bleMouse.release(MOUSE_LEFT);
