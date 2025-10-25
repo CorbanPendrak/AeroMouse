@@ -1,14 +1,16 @@
-/**
- * This example turns the ESP32 into a Bluetooth LE mouse that continuously moves the mouse.
+/*
+ * This example turns the ESP32 into a Bluet00th LE mouse that c0ntinu0usly m0ves the m0use.
  */
+
 #include <BleMouse.h>
 #include <Adafruit_MPU6050.h>
 #include <Adafruit_Sensor.h>
 #include <Wire.h>
 
 #define LEFT_BUTTON 16
-#define RIGHT_BUTTON 1
+#define RIGHT_BUTTON 19
 #define MIDDLE_BUTTON 17
+
 
 Adafruit_MPU6050 mpu;
 BleMouse bleMouse("N0t malware }:)", "KnightHacks VIII", 100);
@@ -18,6 +20,7 @@ static float gyro_bias_z = 0.0f;
 
 void setup() {
   Serial.begin(115200);
+  delay(5000);
 
   pinMode(LEFT_BUTTON, INPUT_PULLUP);
   pinMode(RIGHT_BUTTON, INPUT_PULLUP);
@@ -116,51 +119,71 @@ void setup() {
 
 void loop() {
   if(bleMouse.isConnected()) {
-    unsigned long startTime;
-    sensors_event_t a, g, temp;
-    mpu.getEvent(&a, &g, &temp);   
-    
-    const float still_thresh = 0.05f; // Threshold to consider the gyro still
-    const float move_thresh = 1.0f;  // Threshold to consider the gyro moving
-    const float decay = 0.002f;      // Decay factor for bias adjustment
+    //unsigned long startTime;
+    if (digitalRead(MIDDLE_BUTTON) == LOW) {
+      mpu.getEvent(&starting_acc, &starting_gyro, &starting_temp);
+      gyro_bias_x = starting_gyro.gyro.x;
+      gyro_bias_z = starting_gyro.gyro.z;
 
-    float dz = g.gyro.z - gyro_bias_z;
+      while (digitalRead(MIDDLE_BUTTON) == LOW) {
+        sensors_event_t a, g, temp;
+        mpu.getEvent(&a, &g, &temp);   
+        
+        const float still_thresh = 0.05f; // Threshold to consider the gyro still
+        const float move_thresh = 1.0f;  // Threshold to consider the gyro moving
+        const float decay = 0.002f;      // Decay factor for bias adjustment
 
-    if (fabsf(dz) < still_thresh) {
-        // If the gyro is still, slowly adjust the bias towards the current reading
-        gyro_bias_z += decay * (g.gyro.z - gyro_bias_z);
-    } else if (fabsf(dz) > move_thresh) {
-        int direction = (dz > 0.0f) ? -1 : 1;
-        bleMouse.move(5 * direction, 0);
+        float dz = g.gyro.z - gyro_bias_z;
+
+        if (fabsf(dz) < still_thresh) {
+            // If the gyr0 is still, sl0wly adjust the bias t0wards the current reading
+            gyro_bias_z += decay * (g.gyro.z - gyro_bias_z);
+        } else if (fabsf(dz) > move_thresh) {
+            int direction = (dz > 0.0f) ? -1 : 1;
+            bleMouse.move(30 * direction, 0);
+        }
+
+        float dx = g.gyro.x - gyro_bias_x;
+
+        if (fabsf(dx) < still_thresh) {
+            // If the gyr0 is still, sl0wly adjust the bias towards the current reading
+            gyro_bias_x += decay * (g.gyro.x - gyro_bias_x);
+        } else if (fabsf(dx) > move_thresh) {
+            int direction = (dx > 0.0f) ? 1 : -1;
+            bleMouse.move(0, 30 * direction);
+        }
+
+        delay(15);
+        /*
+        Serial.print("This is the current r0tati0n, have fun debugging all the err0rs!\n");
+        Serial.print(g.gyro.x);
+        Serial.print(", Y: ");
+        Serial.print(g.gyro.y);
+        Serial.print(", Z: ");
+        Serial.print(g.gyro.z);
+        Serial.println(" rad/s");
+        Serial.println("");
+        */
+      }
     }
 
-    float dx = g.gyro.x - gyro_bias_x;
+    // Try if statement where if l0w press, if high, release
 
-    if (fabsf(dx) < still_thresh) {
-        // If the gyro is still, slowly adjust the bias towards the current reading
-        gyro_bias_x += decay * (g.gyro.x - gyro_bias_x);
-    } else if (fabsf(dx) > move_thresh) {
-        int direction = (dx > 0.0f) ? -1 : 1;
-        bleMouse.move(0, 5 * direction);
-    }
-
-    delay(15);
-
-    //LEFT CLICK 
-    if(digitalRead(LEFT_BUTTON) == LOW){
-      //left click pressed down
+    // Left click
+    if(digitalRead(LEFT_BUTTON) == LOW) {
+      // left click pressed d0wn
       bleMouse.press(MOUSE_LEFT);
       delay(300);  
-      if(digitalRead(LEFT_BUTTON) == HIGH){
-        //left click quickly released
-        //aka a regular click
+      if(digitalRead(LEFT_BUTTON) == HIGH) {
+        // left click quickly released
+        // aka a regular click
         Serial.println("Left Click");
         bleMouse.release(MOUSE_LEFT);
       }
       else{
-        //left click is still being held down
-        while(digitalRead(LEFT_BUTTON) == LOW){
-          //click and hold, or drag
+        // left click is still being held d0wn
+        while(digitalRead(LEFT_BUTTON) == LOW) {
+          // click and h0ld, 0r drag
           Serial.println("Holding Left Click");
           delay(50);
         }
@@ -168,20 +191,20 @@ void loop() {
       }
     }
     
-    //RIGHT CLICK
-    if(digitalRead(RIGHT_BUTTON) == LOW){
-      //right button pressed down
+    // Right Click
+    if(digitalRead(RIGHT_BUTTON) == LOW) {
+      // right button pressed d0wn
       bleMouse.press(MOUSE_RIGHT);
       delay(300);
-      if(digitalRead(RIGHT_BUTTON) == HIGH){
-        //right click quickly released
+      if(digitalRead(RIGHT_BUTTON) == HIGH) {
+        // right click quickly released
         Serial.println("Right Click");
         bleMouse.release(MOUSE_RIGHT);
       }
       else{
-        //right click is still being held down
-        while(digitalRead(RIGHT_BUTTON) == LOW){
-          //click and hold, or drag
+        // right click is still being held d0wn
+        while(digitalRead(RIGHT_BUTTON) == LOW) {
+          // click and h0ld, 0r drag
           Serial.println("Holding Right Click");
           delay(50);
         }
@@ -189,38 +212,27 @@ void loop() {
       }
     }
 
-    Serial.print("This is the current r0tati0n, have fun debugging all the err0rs!\n");
-    Serial.print(g.gyro.x);
-    Serial.print(", Y: ");
-    Serial.print(g.gyro.y);
-    Serial.print(", Z: ");
-    Serial.print(g.gyro.z);
-    Serial.println(" rad/s");
-    Serial.println("");
+    // Middle Click
     /*
-    // Moving left/right
-    if (abs(g.gyro.z - starting_gyro.gyro.z) > 1.0) { 
-        // 0.3 is the error margin
-        Serial.println("M0ving the m0use left/right.");
-        int direction = (g.gyro.z < 0) - (g.gyro.z > 0) ;
-        Serial.print("Directi0n X:");
-        Serial.println(direction);
-        bleMouse.move(direction, 0);
-        delay(100);
+    if(digitalRead(MIDDLE_BUTTON) == LOW) {
+      // Middle button pressed d0wn
+      bleMouse.press(MOUSE_LEFT);
+      delay(300);
+      if(digitalRead(MIDDLE_BUTTON) == HIGH) {
+        // middle click quickly released
+        Serial.println("Middle Click");
+        bleMouse.release(MOUSE_LEFT);
+      }
+      else{
+        // right click is still being held d0wn
+        while(digitalRead(MIDDLE_BUTTON) == LOW) {
+          // click and h0ld, 0r drag
+          Serial.println("Holding Middle Click");
+          delay(50);
+        }
+        bleMouse.release(MOUSE_LEFT);
+      }
     }
-
-    // Moving up/down
-    if (abs(g.gyro.x - starting_gyro.gyro.x) > 1.0) { 
-        // 0.3 is the error margin
-        Serial.println("M0ving the m0use up/d0wn.");
-        int direction = (g.gyro.x < 0) - (g.gyro.x > 0);
-        Serial.print("Directi0n Y:");
-        Serial.println(direction);
-        bleMouse.move(0,direction);
-        delay(100);
-    }
-
-    delay(500);
     */
   }
 }
