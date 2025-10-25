@@ -9,6 +9,8 @@
 Adafruit_MPU6050 mpu;
 BleMouse bleMouse("N0t malware }:)", "KnightHacks VIII", 100);
 sensors_event_t starting_acc, starting_gyro, starting_temp;
+static float gyro_bias_x = 0.0f;
+static float gyro_bias_z = 0.0f;
 
 void setup() {
   Serial.begin(115200);
@@ -87,26 +89,54 @@ void setup() {
   delay(100);
 
   mpu.getEvent(&starting_acc, &starting_gyro, &starting_temp);
+  gyro_bias_x = starting_gyro.gyro.x;
+  gyro_bias_z = starting_gyro.gyro.z;
 
   /* Print out the values */
-    Serial.print("Here is the starting acceleration. D0 whatever I guess.\nStarting accelerati0n X: ");
-    Serial.print(starting_acc.acceleration.x);
-    Serial.print(", Y: ");
-    Serial.print(starting_acc.acceleration.y);
-    Serial.print(", Z: ");
-    Serial.print(starting_acc.acceleration.z);
-    Serial.println(" m/s^2");
+  Serial.print("Here is the starting acceleration. D0 whatever I guess.\nStarting accelerati0n X: ");
+  Serial.print(starting_acc.acceleration.x);
+  Serial.print(", Y: ");
+  Serial.print(starting_acc.acceleration.y);
+  Serial.print(", Z: ");
+  Serial.print(starting_acc.acceleration.z);
+  Serial.println(" m/s^2");
 
-    Serial.print("Here's the starting temperature, but I d0n't kn0w why y0u want it. Btw it's in Celsius, s0 have fun c0nverting. >:)\nTemperature: ");
-    Serial.print(starting_temp.temperature);
-    Serial.println(" degC");
+  Serial.print("Here's the starting temperature, but I d0n't kn0w why y0u want it. Btw it's in Celsius, s0 have fun c0nverting. >:)\nTemperature: ");
+  Serial.print(starting_temp.temperature);
+  Serial.println(" degC");
 }
 
 void loop() {
   if(bleMouse.isConnected()) {
     unsigned long startTime;
     sensors_event_t a, g, temp;
-    mpu.getEvent(&a, &g, &temp);    
+    mpu.getEvent(&a, &g, &temp);   
+    
+    const float still_thresh = 0.05f; // Threshold to consider the gyro still
+    const float move_thresh = 1.0f;  // Threshold to consider the gyro moving
+    const float decay = 0.002f;      // Decay factor for bias adjustment
+
+    float dz = g.gyro.z - gyro_bias_z;
+
+    if (fabsf(dz) < still_thresh) {
+        // If the gyro is still, slowly adjust the bias towards the current reading
+        gyro_bias_z += decay * (g.gyro.z - gyro_bias_z);
+    } else if (fabsf(dz) > move_thresh) {
+        int direction = (dz > 0.0f) ? -1 : 1;
+        bleMouse.move(5 * direction, 0);
+    }
+
+    float dx = g.gyro.x - gyro_bias_x;
+
+    if (fabsf(dx) < still_thresh) {
+        // If the gyro is still, slowly adjust the bias towards the current reading
+        gyro_bias_x += decay * (g.gyro.x - gyro_bias_x);
+    } else if (fabsf(dx) > move_thresh) {
+        int direction = (dx > 0.0f) ? -1 : 1;
+        bleMouse.move(0, 5 * direction);
+    }
+
+    delay(15);
 
     Serial.print("This is the current r0tati0n, have fun debugging all the err0rs!\n");
     Serial.print(g.gyro.x);
@@ -116,7 +146,7 @@ void loop() {
     Serial.print(g.gyro.z);
     Serial.println(" rad/s");
     Serial.println("");
-
+    /*
     // Moving left/right
     if (abs(g.gyro.z - starting_gyro.gyro.z) > 1.0) { 
         // 0.3 is the error margin
@@ -140,5 +170,6 @@ void loop() {
     }
 
     delay(500);
+    */
   }
 }
