@@ -166,7 +166,7 @@ Team Roles & Contributions
 - **Sebastian Striba**:
   Developed the project website and presentation materials; structured visuals and copy for clear demos and documentation.
 
-- **Ryan Smidt**:
+- **Ryan Schmidt**:
   Assisted with button logic and initial gyroscope hookup; supported general debugging across modules.
 
 - **Corban Pendrak** (Team Lead):
