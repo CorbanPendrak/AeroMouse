@@ -117,10 +117,17 @@ void setup() {
   Serial.println(" degC");
 }
 
+unsigned long prev_middle_click = 0;
 void loop() {
   if(bleMouse.isConnected()) {
     //unsigned long startTime;
     if (digitalRead(MIDDLE_BUTTON) == LOW) {
+      if (millis() - prev_middle_click < 500) {
+        bleMouse.click(MOUSE_MIDDLE);
+        return;
+      }
+      prev_middle_click = millis();
+
       mpu.getEvent(&starting_acc, &starting_gyro, &starting_temp);
       gyro_bias_x = starting_gyro.gyro.x;
       gyro_bias_z = starting_gyro.gyro.z;
@@ -129,29 +136,28 @@ void loop() {
         sensors_event_t a, g, temp;
         mpu.getEvent(&a, &g, &temp);   
         
-        const float still_thresh = 0.05f; // Threshold to consider the gyro still
+        //const float still_thresh = 0.05f; // Threshold to consider the gyro still
         const float move_thresh = 1.0f;  // Threshold to consider the gyro moving
-        const float decay = 0.002f;      // Decay factor for bias adjustment
+        //const float decay = 0.002f;      // Decay factor for bias adjustment
 
         float dz = g.gyro.z - gyro_bias_z;
+        float dx = g.gyro.x - gyro_bias_x;
+        int direction_x = 0;
+        int direction_z = 0;
 
-        if (fabsf(dz) < still_thresh) {
+        /*if (fabsf(dz) < still_thresh) {
             // If the gyr0 is still, sl0wly adjust the bias t0wards the current reading
             gyro_bias_z += decay * (g.gyro.z - gyro_bias_z);
-        } else if (fabsf(dz) > move_thresh) {
-            int direction = (dz > 0.0f) ? -1 : 1;
-            bleMouse.move(30 * direction, 0);
+        } else*/ if (fabsf(dz) > move_thresh) {
+            direction_z = (dz > 0.0f) ? -1 : 1;
         }
-
-        float dx = g.gyro.x - gyro_bias_x;
-
-        if (fabsf(dx) < still_thresh) {
-            // If the gyr0 is still, sl0wly adjust the bias towards the current reading
+        /*if (fabsf(dx) < still_thresh) {
             gyro_bias_x += decay * (g.gyro.x - gyro_bias_x);
-        } else if (fabsf(dx) > move_thresh) {
-            int direction = (dx > 0.0f) ? 1 : -1;
-            bleMouse.move(0, 30 * direction);
+        } else */if (fabsf(dx) > move_thresh) {
+            direction_x = (dx > 0.0f) ? 1 : -1;
         }
+
+        bleMouse.move(abs(dz) * 10 * direction_z, abs(dx) * 10 * direction_x);
 
         delay(15);
         /*
