@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-g">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AeroMouse - Your Computer, Un-tethered</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Custom Tailwind Config -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        // Font for headlines, matching the retro/blocky style
+                        sans: ['League Spartan', 'sans-serif'],
+                        // Font for body text, keeping it readable
+                        body: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        'brand-red': '#ef4444',
+                        'brand-yellow': '#facc15',
+                        'brand-beige': '#f5e9d3', // Creamy/beige for text and panels
+                        'brand-navy': '#1a1a2e', // Dark navy background
+                        'brand-dark-text': '#262626', // Dark text for on-beige panels
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Google Fonts: League Spartan (Headlines) & Inter (Body) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=League+Spartan:wght@700;900&display=swap" rel="stylesheet">
+    <style>
+        /* Basic smooth scroll */
+        html {
+            scroll-behavior: smooth;
+        }
+        /* Custom button style */
+        .btn {
+            @apply px-8 py-3 rounded-lg text-lg font-semibold uppercase font-sans transform transition-transform duration-100 ease-in-out;
+        }
+        .btn-red {
+            @apply btn bg-brand-red text-white border-b-4 border-red-900 hover:-translate-y-0.5 active:translate-y-0 active:border-b-2;
+        }
+        .btn-beige {
+            @apply btn bg-brand-beige text-brand-red border-b-4 border-gray-500 hover:-translate-y-0.5 active:translate-y-0 active:border-b-2;
+        }
+        /* Custom panel style */
+        .panel {
+            @apply bg-brand-beige text-brand-red p-8 rounded-2xl border-b-4 border-t-2 border-x-2 border-gray-900/40;
+        }
+    </style>
+</head>
+<body class="bg-brand-navy text-brand-beige font-body antialiased">
+
+    <!-- Header -->
+    <header class="bg-brand-navy border-b-4 border-brand-dark-text/50">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <div class="text-2xl font-bold text-white font-sans">
+                <a href="#hero">Aero<span class="text-brand-yellow">Mouse</span></a>
+            </div>
+            <!-- Styled Nav Links in a box -->
+            <div class="hidden md:flex bg-brand-beige text-brand-red p-2 rounded-md border-2 border-brand-dark-text/30 shadow-md items-center space-x-4">
+                <a href="#problem" class="hover:text-brand-red transition-colors px-3 py-1 font-semibold">The Problem</a>
+                <a href="#solution" class="hover:text-brand-red transition-colors px-3 py-1 font-semibold">Solution</a>
+                <a href="#demo" class="hover:text-brand-red transition-colors px-3 py-1 font-semibold">Demo</a>
+                <a href="#tech" class="hover:text-brand-red transition-colors px-3 py-1 font-semibold">Tech</a>
+            </div>
+            <a href="https://github.com/your-repo" target="_blank" class="hidden md:inline-block btn-red !px-5 !py-2 !text-base">
+                View on GitHub
+            </a>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main>
+
+        <!-- Hero Section -->
+        <section id="hero" class="container mx-auto px-6 py-24 md:py-32 flex flex-col md:flex-row items-center">
+            <div class="md:w-1/2 mb-12 md:mb-0 text-center md:text-left">
+                <span class="text-brand-red font-sans font-bold uppercase tracking-wide">A KnightHacks Project</span>
+                <h1 class="text-5xl md:text-7xl font-sans font-black text-brand-yellow mt-2 mb-6 leading-tight">
+                    Your Computer, Un-tethered.
+                </h1>
+                <p class="text-lg text-brand-beige max-w-lg mx-auto md:mx-0 mb-8">
+                    Introducing AeroMouse: An intuitive, driverless 3D mouse that translates natural hand gestures into standard 2D computer controls.
+                </p>
+                <div class="flex justify-center md:justify-start space-x-4">
+                    <a href="#demo" class="btn-red">
+                        Watch Demo
+                    </a>
+                    <a href="https://github.com/your-repo" target="_blank" class="btn-beige">
+                        View Code
+                    </a>
+                </div>
+            </div>
+            <div class="md:w-1/2">
+                <!-- Placeholder for a render of your mouse -->
+                <img src="https://images.unsplash.com/photo-1527814223023-e3c3587b1886?w=600&h=400&fit=crop&q=80&auto=format&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1" 
+                     alt="AeroMouse 3D Mouse Prototype"
+                     class="rounded-2xl shadow-2xl shadow-yellow-900/20 w-full object-cover"
+                     onerror="this.src='fritzing-make1 copy.png'">
+            </div>
+        </section>
+
+        <!-- Problem Section -->
+        <section id="problem" class="bg-brand-dark-text/30 py-20 md:py-28">
+            <div class="container mx-auto px-6">
+                <div class="text-center max-w-3xl mx-auto">
+                    <h2 class="text-4xl md:text-5xl font-sans font-bold text-white mb-4">The Mouse Has Been Chained to the Desk for 40 Years.</h2>
+                    <!-- REMOVED opacity /90 for better readability -->
+                    <p class="text-lg text-brand-beige mb-12">
+                        We're physically tied to a flat surface, which is restrictive, un-ergonomic, and clunky.
+                    </p>
+                </div>
+                <!-- Updated to a 3-column grid -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <div class="panel">
+                        <h3 class="text-2xl font-sans font-bold mb-3">It's Restrictive</h3>
+                        <p>
+                            Using a mouse is awkward on a couch, in bed, or on a small airplane tray. We are physically tethered to a flat surface.
+                        </p>
+                    </div>
+                    <div class="panel">
+                        <h3 class="text-2xl font-sans font-bold mb-3">It's Un-ergonomic</h3>
+                        <p>
+                            Prolonged, repetitive use of a traditional mouse can lead to wrist strain and discomfort (RSI).
+                        </p>
+                    </div>
+                    <div class="panel">
+                        <h3 class="text-2xl font-sans font-bold mb-3">It's Clunky</h3>
+                        <p>
+                            Presenters are stuck behind a podium just to click "next" or must carry a separate, limited "clicker" device.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- Solution Section -->
+        <section id="solution" class="py-20 md:py-28">
+            <div class="container mx-auto px-6 flex flex-col md:flex-row items-center gap-12">
+                <div class="md:w-1/2">
+                    <!-- Placeholder for a photo of the mouse in hand -->
+                    <img src="https://images.unsplash.com/photo-1611117775520-7a0600b8d5d1?w=600&h=450&fit=crop&q=80&auto=format&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1" 
+                         alt="AeroMouse in hand"
+                         class="rounded-2xl shadow-2xl shadow-yellow-900/20 w-full object-cover"
+                         onerror="this.src='IMG_6012.jpg'">
+                </div>
+                <div class="md:w-1/2">
+                    <span class="text-brand-red font-sans font-bold uppercase tracking-wide">The Solution</span>
+                    <h2 class="text-4xl md:text-5xl font-sans font-bold text-white mt-2 mb-6">Control Your Cursor From the Air.</h2>
+                    <div class="space-y-6">
+                        <div class="flex items-start space-x-4">
+                            <!-- Icon -->
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-brand-yellow flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M14 10l-2 1m0 0l-2-1m2 1v2.5M20 7l-2 1m2-1l-2-1m2 1v2.5M12 21a9 9 0 01-9-9 9 9 0 019-9 9 9 0 019 9 9 9 0 01-9 9zm0 0a9 9 0 000-18 9 9 0 000 18z" />
+                            </svg>
+                            <div>
+                                <h3 class="text-xl font-sans font-semibold text-white">Natural Gesture Mapping</h3>
+                                <!-- UPDATED TEXT to match new pitch -->
+                                <p class="text-brand-beige">AeroMouse translates natural 3D hand motions into standard 2D mouse commands. <strong>Tilt</strong> your hand to move the cursor. <strong>Twist</strong> your wrist to scroll. It feels natural because it is.</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start space-x-4">
+                            <!-- Icon -->
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-brand-yellow flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                            </svg>
+                            <div>
+                                <h3 class="text-xl font-sans font-semibold text-white">Driverless & Universal</h3>
+                                <p class="text-brand-beige">The magic is in the hack. By emulating a standard Bluetooth HID (Human Interface Device), AeroMouse works out-of-the-box with *any* computer or tablet. No drivers, no setup. It just works.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Demo Section -->
+        <section id="demo" class="bg-brand-dark-text/30 py-20 md:py-28">
+            <div class="container mx-auto px-6 text-center">
+                <h2 class="text-4xl md:text-5xl font-sans font-bold text-white mb-12">See It In Action</h2>
+                <div class="aspect-video bg-black rounded-2xl border-4 border-gray-900/40 shadow-2xl max-w-4xl mx-auto overflow-hidden">
+                    <!-- This is a placeholder for your demo video (e.g., YouTube embed or a GIF) -->
+                    <!-- For a hackathon, a GIF or short .mp4 is perfect -->
+                    <img src="https://images.unsplash.com/photo-1617953141905-ab36f46c6f3c?w=1280&h=720&fit=crop&q=80&auto=format&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1" 
+                         alt="AeroMouse Live Demo"
+                         class="w-full h-full object-cover"
+                         onerror="this.src='https://placehold.co/1280x720/1a1a2e/f5e9d3?text=Live+Demo+Video'">
+                    <!-- Example YouTube Embed:
+                    <iframe class="w-full h-full" src="https://www.youtube.com/embed/dQw4w9WgXcQ" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Tech Stack Section -->
+        <section id="tech" class="py-20 md:py-28">
+            <div class="container mx-auto px-6">
+                <div class="text-center max-w-3xl mx-auto">
+                    <h2 class="text-4xl md:text-5xl font-sans font-bold text-white mb-12">The Tech Behind the Magic</h2>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <!-- Hardware -->
+                    <div class="panel">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-brand-red mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m-2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z" />
+                        </svg>
+                        <h3 class="text-2xl font-sans font-bold mb-3">Hardware</h3>
+                        <ul class="list-disc list-inside space-y-1">
+                            <li>MCU: ESP32 (for Bluetooth)</li>
+                            <li>Sensor: MPU-6050 6-Axis Gyro</li>
+                            <li>3D Printed Enclosure</li>
+                            <li>LiPo Battery & Charger</li>
+                        </ul>
+                    </div>
+                    <!-- Firmware -->
+                    <div class="panel">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-brand-red mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
+                        </svg>
+                        <h3 class="text-2xl font-sans font-bold mb-3">Firmware (The "Brain")</h3>
+                        <ul class="list-disc list-inside space-y-1">
+                            <li>Written in C++ (Arduino)</li>
+                            <li>Sensor Fusion (Kalman Filter)</li>
+                            <li>Gyro Drift Compensation</li>
+                            <li>Custom Gesture Mapping Logic</li>
+                        </ul>
+                    </div>
+                    <!-- Software -->
+                    <div class="panel">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-brand-red mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                        </svg>
+                        <h3 class="text-2xl font-sans font-bold mb-3">Software (The "Hack")</h3>
+                        <ul class="list-disc list-inside space-y-1">
+                            <li>Bluetooth HID Profile</li>
+                            <li>Emulates Standard Mouse</li>
+                            <li>Sends Cursor & Scroll Events</li>
+                            <li>Result: 100% Driverless!</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA / Future Section -->
+        <section id="future" class="py-20 md:py-32">
+            <div class="container mx-auto px-6 text-center max-w-3xl">
+                <h2 class="text-3xl md:text-4xl font-sans font-bold text-white mb-6">Check out our hack!</h2>
+                <!-- REMOVED opacity for better readability -->
+                <p class="text-lg text-brand-beige mb-8">
+                    This project was built in under 36 hours for KnightHacks. See the (messy) code, read about the challenges we faced, and explore what we plan to do next.
+                </p>
+                <a href="https://github.com/your-repo" target="_blank" class="btn-red">
+                    View Project on GitHub
+                </a>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-brand-navy border-t border-brand-dark-text/50 py-8">
+        <!-- CHANGED from text-brand-beige/70 to /90 for better readability -->
+        <div class="container mx-auto px-6 text-center text-brand-beige/90">
+            <p>&copy; 2025 AeroMouse Team. A KnightHacks Project.</p>
+        </div>
+    </footer>
+
+</body>
+</html>
+
