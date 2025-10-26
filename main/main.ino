@@ -18,7 +18,7 @@
 #define ALPHA 0.96f
 
 Adafruit_MPU6050 mpu;
-BleMouse bleMouse("N0t malware }:)", "KnightHacks VIII", 100);
+BleMouse bleMouse("Air Mouse", "KnightHacks VIII", 100);
 
 // 0rientati0n tracking (c0mplementary filter)
 static float pitch = 0.0f;
