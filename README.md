@@ -100,7 +100,7 @@ Install the our customized `ESP32 BLE Mouse` (original by T-vK) with **Sketch �
 ### Advanced Features
 - **Double-tap middle button**: Toggle scroll mode
 - **5 quick taps middle button**: Recalibrate sensors
-- **Long-press right button (2s)**: Cycle sensitivity (Low/Medium/High)
+- **Long-press right button (2s)**: Cycle sensitivity (Low/High)
 
 ### Drag & Drop
 - **Hold left button** → **Press middle button** → **Drag with left down**
