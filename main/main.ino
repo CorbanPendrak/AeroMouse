@@ -76,23 +76,19 @@ float precision_multiplier = 0.3f; // Slow down in precision mode
 
 // Sensitivity m0des - can cycle with l0ng-press 0f right butt0n
 // Because 0ne setting w0uldn't be en0ugh f0r y0u pe0ple.
-enum SensitivityMode { SENS_LOW, SENS_MEDIUM, SENS_HIGH };
-SensitivityMode current_sensitivity = SENS_MEDIUM;
-float sensitivity_multiplier = 1.5f;
+enum SensitivityMode { SENS_LOW, SENS_HIGH };
+SensitivityMode current_sensitivity = SENS_LOW;
+float sensitivity_multiplier = 0.8f;
 
 // Update sensitivity based 0n m0de
 void updateSensitivity() {
   switch (current_sensitivity) {
     case SENS_LOW:
       sensitivity_multiplier = 0.8f;
-      Serial.println("Sensitivity: L0W. H0w very... cautious 0f y0u.");
-      break;
-    case SENS_MEDIUM:
-      sensitivity_multiplier = 1.5f;
-      Serial.println("Sensitivity: MEDIUM. The default. H0w 0riginal.");
+      Serial.println("Sensitivity: L0W. The default. H0w sensible.");
       break;
     case SENS_HIGH:
-      sensitivity_multiplier = 2.5f;
+      sensitivity_multiplier = 2.8f;
       Serial.println("Sensitivity: HIGH. Feeling adventur0us, are we?");
       break;
   }
@@ -544,7 +540,7 @@ void loop() {
         while (digitalRead(RIGHT_BUTTON) == LOW && digitalRead(MIDDLE_BUTTON) == HIGH) {
           if (millis() - right_press_start > 2000 && !long_press_detected) {
             // L0ng press - cycle sensitivity
-            current_sensitivity = (SensitivityMode)((current_sensitivity + 1) % 3);
+            current_sensitivity = (SensitivityMode)((current_sensitivity + 1) % 2);
             updateSensitivity();
             long_press_detected = true;
             bleMouse.release(MOUSE_RIGHT);
